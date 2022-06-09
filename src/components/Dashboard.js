@@ -7,7 +7,7 @@ import {
   VictoryStack,
   VictoryAxis,
   VictoryGroup,
-  VictoryLabel,
+  VictoryLegend,
 } from "victory";
 
 export default function Dashbord() {
@@ -17,42 +17,16 @@ export default function Dashbord() {
     <div>
       <h1>Dashbord Component</h1>
       <div>
-        <label htmlFor="evelyn">
-          Evelyn
-          <input type="checkbox" name="evelyn" id="evelyn" />
-        </label>
-        <label htmlFor="aranka">
-          Aranka
-          <input type="checkbox" name="aranka" id="aranka" />
-        </label>
-        <label htmlFor="floris">
-          Floris
-          <input type="checkbox" name="floris" id="floris" />
-        </label>
-        <label htmlFor="hector">
-          Hector
-          <input type="checkbox" name="hector" id="hector" />
-        </label>
-        <label htmlFor="martina">
-          Martina
-          <input type="checkbox" name="martina" id="martina" />
-        </label>
-        <label htmlFor="rahima">
-          Rahima
-          <input type="checkbox" name="rahima" id="rahima" />
-        </label>
-        <label htmlFor="sandra">
-          Sandra
-          <input type="checkbox" name="sandra" id="sandra" />
-        </label>
-        <label htmlFor="wietske">
-          Wietske
-          <input type="checkbox" name="wietske" id="wietske" />
-        </label>
-        <label htmlFor="storm">
-          Storm
-          <input type="checkbox" name="storm" id="storm" />
-        </label>
+        <a href="#">Evelyn</a>
+        <a href="#">Aranka</a>
+        <a href="#">Floris</a>
+        <a href="#">Hector</a>
+        <a href="#">Martina</a>
+        <a href="#">Rahima</a>
+        <a href="#">Maurits</a>
+        <a href="#">Sandra</a>
+        <a href="#">Wietske</a>
+        <a href="#">Storm</a>
       </div>
       <VictoryChart
         style={{ parent: { maxWidth: "90%" } }}
@@ -60,6 +34,17 @@ export default function Dashbord() {
         theme={VictoryTheme.material}
         width={1000}
       >
+        <VictoryLegend
+          x={470}
+          y={20}
+          orientation="horizontal"
+          gutter={20}
+          data={[
+            { name: "Fun", symbol: { fill: "tomato" } },
+            { name: "Difficult", symbol: { fill: "gold" } },
+          ]}
+        />
+
         <VictoryAxis
           style={{ tickLabels: { angle: 50, fontSize: 10, padding: 15 } }}
         />
