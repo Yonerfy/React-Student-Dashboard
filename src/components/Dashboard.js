@@ -1,6 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { studentAdded } from "../features/studentSlice";
+import { studentFilter } from "../features/filterSlice";
+import { selectFilterStudents } from "../features/filterSlice";
+import { studentTest } from "../features/studentSlice";
+import { studentDelete } from "../features/studentSlice";
+import StudentCheckbox from "./StudentCheckbox";
 import {
   VictoryBar,
   VictoryChart,
@@ -13,7 +19,8 @@ import {
 } from "victory";
 
 export default function Dashbord() {
-  const data = useSelector((state) => state.student);
+  const dispatch = useDispatch();
+  const data = useSelector((state) => selectFilterStudents(state));
 
   function calcAvarege(arr, assignment, funOrDifficult) {
     let funTotal = [];
@@ -42,69 +49,149 @@ export default function Dashbord() {
     });
   }
   const dataAvareges = newDataWithAvarege(data);
-  const t = data.filter((s) => s.assignment === "W6D2");
-  // const t = calcAvarege(data, "W1D2-1");
-  console.log(t);
 
   function handlerCheckbox(e) {
-    const { name, value } = e.target;
+    let studentArr = [];
+    const { name, value, checked } = e.target;
+    const checkbox = document.querySelectorAll('input[type="checkbox"]');
+    checkbox.forEach(
+      (chk) => chk.checked === true && studentArr.push(chk.name)
+    );
+
+    const filterDataAvg = dataAvareges.filter((student) =>
+      studentArr.includes(student.name)
+    );
+
+    dispatch(studentTest(filterDataAvg));
+    console.log(studentArr, filterDataAvg);
   }
 
   return (
     <div>
       <h1>Dashbord Component</h1>
       <div>
-        <label htmlFor="All">
+        <label htmlFor="all">
           All
-          <input type="checkbox" name="All" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="all"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
+        {/* <StudentCheckbox
+          htmlFor="all"
+          text="all"
+          CpName="all"
+          handlerCheckbox={handlerCheckbox}
+        /> */}
         <label htmlFor="fun">
           Fun
-          <input type="checkbox" name="fun" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="fun"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="difficult">
           Difficult
-          <input type="checkbox" name="difficult" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="difficult"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Evelyn">
           Evelyn
-          <input type="checkbox" name="Evelyn" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Evelyn"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Aranka">
           Aranka
-          <input type="checkbox" name="Aranka" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Aranka"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Floris">
           Floris
-          <input type="checkbox" name="Floris" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Floris"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Hector">
           Hector
-          <input type="checkbox" name="Hector" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Hector"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Martina">
           Martina
-          <input type="checkbox" name="Martina" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Martina"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Rahima">
           Rahima
-          <input type="checkbox" name="Rahima" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Rahima"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Maurits">
           Maurits
-          <input type="checkbox" name="Maurits" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Maurits"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
-        <label htmlFor="Wandra">
+        <label htmlFor="Sandra">
           Sandra
-          <input type="checkbox" name="Wandra" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Sandra"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Wietske">
           Wietske
-          <input type="checkbox" name="Wietske" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Wietske"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
         <label htmlFor="Storm">
           Storm
-          <input type="checkbox" name="Storm" onClick={handlerCheckbox} />
+          <input
+            type="checkbox"
+            name="Storm"
+            onClick={handlerCheckbox}
+            defaultChecked
+          />
         </label>
       </div>
       <VictoryChart
@@ -194,21 +281,18 @@ export default function Dashbord() {
         <VictoryGroup>
           <VictoryLine
             style={{
-              data: { stroke: "gold" },
-              parent: { border: "1px solid #ccc" },
+              data: { stroke: "gold", strokeWidth: 2 },
             }}
             data={dataAvareges}
             x="assignment"
-            y="difficult"
+            y={"difficult"}
           />
           <VictoryLine
             style={{
-              data: { stroke: "tomato" },
-              parent: { border: "1px solid #ccc" },
+              data: { stroke: "tomato", strokeWidth: 2 },
             }}
             data={dataAvareges}
-            x="assignment"
-            y="fun"
+            y={"fun"}
           />
         </VictoryGroup>
       </VictoryChart>
