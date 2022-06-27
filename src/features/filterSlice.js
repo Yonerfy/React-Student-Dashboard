@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const filters = {
   name: "all",
+  checked: false,
 };
 
 let initialState = filters;
@@ -13,48 +14,27 @@ const filterSlice = createSlice({
     studentFilter(state, action) {
       state.name = action.payload;
     },
+    sameStudent(state, action) {
+      state.checked = action.payload;
+    },
   },
 });
 
-export const { studentFilter } = filterSlice.actions;
+export const { studentFilter, sameStudent } = filterSlice.actions;
 export default filterSlice.reducer;
 
-export const selectFilterStudents = (state) => {
+export const selectFilterStudents = (state, checkbox) => {
   if (state.filter.name === "all") {
     return state.student;
   }
 
-  if (state.filter.name === "Evelyn") {
-    return state.student.filter((student) => student.name !== "Evelyn");
-  }
+  let studentArr = [];
+  checkbox = document.querySelectorAll('input[type="checkbox"]');
+  checkbox.forEach((chk) => chk.checked && studentArr.push(chk.name));
 
-  if (state.filter.name === "Aranka") {
-    return state.student.filter((student) => student.name !== "Aranka");
-  }
-  if (state.filter.name === "Floris") {
-    return state.student.filter((student) => student.name !== "Floris");
-  }
-  if (state.filter.name === "Hector") {
-    return state.student.filter((student) => student.name !== "Hector");
-  }
-  if (state.filter.name === "Martina") {
-    return state.student.filter((student) => student.name !== "Martina");
-  }
-  if (state.filter.name === "Maurits") {
-    return state.student.filter((student) => student.name !== "Maurits");
-  }
-  if (state.filter.name === "Rahima") {
-    return state.student.filter((student) => student.name !== "Rahima");
-  }
-  if (state.filter.name === "Sandra") {
-    return state.student.filter((student) => student.name !== "Sandra");
-  }
-  if (state.filter.name === "Wietske") {
-    return state.student.filter((student) => student.name !== "Wietske");
-  }
-  if (state.filter.name === "Storm") {
-    return state.student.filter((student) => student.name !== "Storm");
-  }
+  const filterDataAvg = state.student.filter((student) =>
+    studentArr.includes(student.name)
+  );
 
-  return state.student;
+  return filterDataAvg;
 };

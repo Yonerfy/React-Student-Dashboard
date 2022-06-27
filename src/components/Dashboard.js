@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { studentAdded } from "../features/studentSlice";
 import { studentFilter } from "../features/filterSlice";
+import { sameStudent } from "../features/filterSlice";
 import { selectFilterStudents } from "../features/filterSlice";
 import { studentTest } from "../features/studentSlice";
 import { studentDelete } from "../features/studentSlice";
 import StudentCheckbox from "./StudentCheckbox";
 import {
+  VictoryContainer,
   VictoryBar,
   VictoryChart,
   VictoryTheme,
@@ -19,8 +21,27 @@ import {
 } from "victory";
 
 export default function Dashbord() {
+  const [toggleFunDifficult, setToggleFunDifficult] = useState({
+    fun: true,
+    difficult: true,
+  });
   const dispatch = useDispatch();
-  const data = useSelector((state) => selectFilterStudents(state));
+  const data = useSelector((state, checkbox) =>
+    selectFilterStudents(state, checkbox)
+  );
+  console.log(toggleFunDifficult);
+
+  function funDifficultToggle(name) {
+    name === "fun"
+      ? setToggleFunDifficult((toggleFunDifficult) => ({
+          ...toggleFunDifficult,
+          fun: !toggleFunDifficult.fun,
+        }))
+      : setToggleFunDifficult((toggleFunDifficult) => ({
+          ...toggleFunDifficult,
+          difficult: !toggleFunDifficult.difficult,
+        }));
+  }
 
   function calcAvarege(arr, assignment, funOrDifficult) {
     let funTotal = [];
@@ -51,19 +72,9 @@ export default function Dashbord() {
   const dataAvareges = newDataWithAvarege(data);
 
   function handlerCheckbox(e) {
-    let studentArr = [];
-    const { name, value, checked } = e.target;
-    const checkbox = document.querySelectorAll('input[type="checkbox"]');
-    checkbox.forEach(
-      (chk) => chk.checked === true && studentArr.push(chk.name)
-    );
-
-    const filterDataAvg = dataAvareges.filter((student) =>
-      studentArr.includes(student.name)
-    );
-
-    dispatch(studentTest(filterDataAvg));
-    console.log(studentArr, filterDataAvg);
+    const { name, checked } = e.target;
+    dispatch(studentFilter(name));
+    dispatch(sameStudent(checked));
   }
 
   return (
@@ -90,7 +101,7 @@ export default function Dashbord() {
           <input
             type="checkbox"
             name="fun"
-            onClick={handlerCheckbox}
+            onClick={(e) => funDifficultToggle(e.target.name)}
             defaultChecked
           />
         </label>
@@ -99,7 +110,7 @@ export default function Dashbord() {
           <input
             type="checkbox"
             name="difficult"
-            onClick={handlerCheckbox}
+            onClick={(e) => funDifficultToggle(e.target.name)}
             defaultChecked
           />
         </label>
@@ -226,23 +237,27 @@ export default function Dashbord() {
         />
         <VictoryGroup>
           <VictoryStack>
-            <VictoryBar
-              barWidth={5}
-              data={dataAvareges}
-              x="assignment"
-              y={"fun"}
-              style={{ data: { fill: "tomato", width: 3 } }}
-              alignment="end"
-            />
+            {toggleFunDifficult.fun && (
+              <VictoryBar
+                barWidth={5}
+                data={dataAvareges}
+                x="assignment"
+                y={"fun"}
+                style={{ data: { fill: "tomato", width: 3 } }}
+                alignment="end"
+              />
+            )}
           </VictoryStack>
           <VictoryStack>
-            <VictoryBar
-              data={dataAvareges}
-              x="assignment"
-              y={"difficult"}
-              style={{ data: { fill: "gold", width: 5 } }}
-              alignment="start"
-            />
+            {toggleFunDifficult.difficult && (
+              <VictoryBar
+                data={dataAvareges}
+                x="assignment"
+                y={"difficult"}
+                style={{ data: { fill: "gold", width: 5 } }}
+                alignment="start"
+              />
+            )}
           </VictoryStack>
         </VictoryGroup>
       </VictoryChart>
@@ -279,21 +294,26 @@ export default function Dashbord() {
           tickFormat={[1, 2, 3, 4, 5]}
         />
         <VictoryGroup>
-          <VictoryLine
-            style={{
-              data: { stroke: "gold", strokeWidth: 2 },
-            }}
-            data={dataAvareges}
-            x="assignment"
-            y={"difficult"}
-          />
-          <VictoryLine
-            style={{
-              data: { stroke: "tomato", strokeWidth: 2 },
-            }}
-            data={dataAvareges}
-            y={"fun"}
-          />
+          {toggleFunDifficult.fun && (
+            <VictoryLine
+              style={{
+                data: { stroke: "tomato", strokeWidth: 2 },
+              }}
+              alignment="start"
+              data={dataAvareges}
+              x="assignment"
+              y={"fun"}
+            />
+          )}
+          {toggleFunDifficult.difficult && (
+            <VictoryLine
+              style={{
+                data: { stroke: "gold", strokeWidth: 2 },
+              }}
+              data={dataAvareges}
+              y={"difficult"}
+            />
+          )}
         </VictoryGroup>
       </VictoryChart>
     </div>
