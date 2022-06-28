@@ -23,13 +23,13 @@ const filterSlice = createSlice({
 export const { studentFilter, sameStudent } = filterSlice.actions;
 export default filterSlice.reducer;
 
-export const selectFilterStudents = (state, checkbox) => {
+export const selectFilterStudents = (state) => {
   if (state.filter.name === "all") {
     return state.student;
   }
 
   let studentArr = [];
-  checkbox = document.querySelectorAll('input[type="checkbox"]');
+  const checkbox = document.querySelectorAll('input[type="checkbox"]');
   checkbox.forEach((chk) => chk.checked && studentArr.push(chk.name));
 
   const filterDataAvg = state.student.filter((student) =>

@@ -26,10 +26,7 @@ export default function Dashbord() {
     difficult: true,
   });
   const dispatch = useDispatch();
-  const data = useSelector((state, checkbox) =>
-    selectFilterStudents(state, checkbox)
-  );
-  console.log(toggleFunDifficult);
+  const data = useSelector((state) => selectFilterStudents(state));
 
   function funDifficultToggle(name) {
     name === "fun"
@@ -70,6 +67,7 @@ export default function Dashbord() {
     });
   }
   const dataAvareges = newDataWithAvarege(data);
+  console.log(dataAvareges);
 
   function handlerCheckbox(e) {
     const { name, checked } = e.target;
@@ -90,12 +88,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
-        {/* <StudentCheckbox
-          htmlFor="all"
-          text="all"
-          CpName="all"
-          handlerCheckbox={handlerCheckbox}
-        /> */}
+
         <label htmlFor="fun">
           Fun
           <input
@@ -105,6 +98,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="difficult">
           Difficult
           <input
@@ -114,6 +108,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Evelyn">
           Evelyn
           <input
@@ -123,6 +118,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Aranka">
           Aranka
           <input
@@ -132,6 +128,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Floris">
           Floris
           <input
@@ -141,6 +138,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Hector">
           Hector
           <input
@@ -150,6 +148,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Martina">
           Martina
           <input
@@ -159,6 +158,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Rahima">
           Rahima
           <input
@@ -177,6 +177,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Sandra">
           Sandra
           <input
@@ -186,6 +187,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Wietske">
           Wietske
           <input
@@ -195,6 +197,7 @@ export default function Dashbord() {
             defaultChecked
           />
         </label>
+
         <label htmlFor="Storm">
           Storm
           <input
@@ -228,6 +231,8 @@ export default function Dashbord() {
 
         <VictoryAxis
           style={{ tickLabels: { angle: 50, fontSize: 10, padding: 15 } }}
+          tickValues={dataAvareges.map((assig) => assig.assignment)}
+          tickFormat={dataAvareges.map((assig) => assig.assignment)}
         />
         <VictoryAxis
           style={{ tickLabels: { fontSize: 10 } }}
@@ -286,6 +291,8 @@ export default function Dashbord() {
         />
         <VictoryAxis
           style={{ tickLabels: { angle: 50, fontSize: 10, padding: 15 } }}
+          tickValues={dataAvareges.map((assig) => assig.assignment)}
+          tickFormat={dataAvareges.map((assig) => assig.assignment)}
         />
         <VictoryAxis
           style={{ tickLabels: { fontSize: 10 } }}
@@ -299,7 +306,6 @@ export default function Dashbord() {
               style={{
                 data: { stroke: "tomato", strokeWidth: 2 },
               }}
-              alignment="start"
               data={dataAvareges}
               x="assignment"
               y={"fun"}
