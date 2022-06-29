@@ -24,7 +24,7 @@ export const { studentFilter, sameStudent } = filterSlice.actions;
 export default filterSlice.reducer;
 
 export const selectFilterStudents = (state) => {
-  if (state.filter.name === "all") {
+  if (state.filter.name === "all" || state.filter.name === "") {
     return state.student;
   }
 

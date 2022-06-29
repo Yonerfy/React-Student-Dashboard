@@ -27,6 +27,7 @@ export default function Dashbord() {
   });
   const dispatch = useDispatch();
   const data = useSelector((state) => selectFilterStudents(state));
+  const dataAvareges = newDataWithAvarege(data);
 
   function funDifficultToggle(name) {
     name === "fun"
@@ -66,7 +67,7 @@ export default function Dashbord() {
       };
     });
   }
-  const dataAvareges = newDataWithAvarege(data);
+
   console.log(dataAvareges);
 
   function handlerCheckbox(e) {
