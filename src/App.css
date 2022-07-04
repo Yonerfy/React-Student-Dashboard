@@ -3,14 +3,22 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #fff;
   min-height: 20vh;
+  width: 1500px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
+}
+
+.App-header h1 {
+  text-align: left;
+  align-self: flex-start;
+  margin-bottom: 0;
 }
 
 .App-link {
@@ -28,4 +36,109 @@
 
 .VictoryContainer svg g text tspan {
   font-size: 5px;
+}
+
+.container {
+  width: 1500px;
+  margin: 0 auto;
+}
+
+.container table {
+  display: flex;
+}
+
+.nav-base {
+  width: inherit;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 80px;
+  font-size: 17px;
+}
+.nav-base a {
+  text-decoration: none;
+}
+
+.nav-base a:hover,
+.nav-base a:visited,
+.nav-base a:active {
+  color: black;
+}
+.nav-main a:nth-child(2),
+.nav-main a:nth-child(3) {
+  margin-left: 20px;
+}
+
+.nav-second {
+  margin-top: 20px;
+}
+.nav-second a:not(:nth-child(1)) {
+  margin-left: 20px;
+}
+
+.student-chk {
+  display: flex;
+}
+.student-chk label:not(:nth-child(1)) {
+  margin-left: 20px;
+}
+
+.display-left {
+  text-align: left;
+  margin: 20px 0 20px 0;
+}
+
+.table-head {
+  font-weight: bold;
+  font-size: 17px;
+  background-color: #68bee6;
+}
+table {
+  margin-top: 20px;
+}
+
+td,
+tr {
+  border: 1px solid black;
+  padding: 10px;
+}
+tr:nth-child(even) {
+  background-color: #a7e1f1;
+}
+tr:nth-child(odd) {
+  background-color: #68bee6;
+}
+
+.student-card {
+  width: 250px;
+  padding: 10px;
+  background-color: rgb(245, 245, 245);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.student-card img {
+  border-radius: 50%;
+  margin-top: 10px;
+}
+
+.student-card a:hover,
+.student-card a:visited,
+.student-card a:active {
+  color: black;
+}
+
+.student-card a {
+  text-decoration: none;
+}
+.student-card h3 {
+  margin-bottom: -20px;
+}
+.student-profil {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }

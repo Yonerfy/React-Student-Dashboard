@@ -1,6 +1,7 @@
 import "./App.css";
 import Dashboard from "./components/Dashboard";
 import Student from "./components/Student";
+import StudentProfil from "./components/StudentProfil";
 import Tableview from "./components/Tableview";
 import { Link, Routes, Route } from "react-router-dom";
 import { studentFilter } from "./features/filterSlice";
@@ -12,11 +13,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>Yonerfy Student Dashbord</p>
-      </header>
-
-      <main>
-        <nav>
+        <h1>Yonerfy Student Dashbord</h1>
+        <nav className="nav-base nav-main">
           <Link
             to="/"
             onClick={(e) => {
@@ -26,10 +24,21 @@ function App() {
           >
             Dashboard
           </Link>
-          <Link to="/Student">Student</Link>
-          <Link to="/Tableview">Tableview</Link>
+          <Link to="/StudentProfil">Student Profil</Link>
+          <Link
+            to="/Tableview"
+            onClick={(e) => {
+              dispatch(studentFilter(e.target.name));
+              dispatch(sameStudent(e.target.checked));
+            }}
+          >
+            Tableview
+          </Link>
         </nav>
-        <div>
+      </header>
+
+      <main className="container">
+        <div className="nav-base nav-second">
           <Link to={`/Evelyn`}>Evelyn</Link>
           <Link to={`/Aranka`}>Aranka</Link>
           <Link to={`/Floris`}>Floris</Link>
@@ -45,6 +54,7 @@ function App() {
           <Route exact path="/" element={<Dashboard />} />
           <Route path="/:studentName" element={<Student />} />
           <Route path="/Tableview" element={<Tableview />} />
+          <Route path="/StudentProfil" element={<StudentProfil />} />
         </Routes>
       </main>
     </div>

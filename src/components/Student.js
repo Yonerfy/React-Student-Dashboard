@@ -19,16 +19,16 @@ export default function Student() {
   );
 
   return (
-    <div>
-      <h1>Student Component</h1>
+    <div className="container">
+      <h3 className="display-left">{studentName}</h3>
       <VictoryChart
-        style={{ parent: { maxWidth: "90%" } }}
+        style={{ parent: { maxWidth: "100%" } }}
         domainPadding={10}
         theme={VictoryTheme.material}
         width={1000}
       >
         <VictoryLegend
-          x={470}
+          x={0}
           y={20}
           orientation="horizontal"
           gutter={20}
@@ -72,7 +72,7 @@ export default function Student() {
       </VictoryChart>
       <VictoryChart
         style={{
-          parent: { maxWidth: "90%" },
+          parent: { maxWidth: "100%" },
           data: { stroke: "#c43a31" },
         }}
         domainPadding={15}
@@ -80,7 +80,7 @@ export default function Student() {
         width={1000}
       >
         <VictoryLegend
-          x={420}
+          x={0}
           y={20}
           orientation="horizontal"
           gutter={20}

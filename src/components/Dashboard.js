@@ -5,9 +5,7 @@ import { studentAdded } from "../features/studentSlice";
 import { studentFilter } from "../features/filterSlice";
 import { sameStudent } from "../features/filterSlice";
 import { selectFilterStudents } from "../features/filterSlice";
-import { studentTest } from "../features/studentSlice";
-import { studentDelete } from "../features/studentSlice";
-import StudentCheckbox from "./StudentCheckbox";
+
 import {
   VictoryContainer,
   VictoryBar,
@@ -24,6 +22,20 @@ export default function Dashbord() {
   const [toggleFunDifficult, setToggleFunDifficult] = useState({
     fun: true,
     difficult: true,
+  });
+
+  const [chkState, setChkState] = useState({
+    all: true,
+    Evelyn: true,
+    Aranka: true,
+    Floris: true,
+    Hector: true,
+    Martina: true,
+    Rahima: true,
+    Maurits: true,
+    Sandra: true,
+    Wietske: true,
+    Storm: true,
   });
   const dispatch = useDispatch();
   const data = useSelector((state) => selectFilterStudents(state));
@@ -68,25 +80,28 @@ export default function Dashbord() {
     });
   }
 
-  console.log(dataAvareges);
-
   function handlerCheckbox(e) {
     const { name, checked } = e.target;
     dispatch(studentFilter(name));
     dispatch(sameStudent(checked));
   }
 
+  function handlerChange(e) {
+    const { checked, name } = e.target;
+  }
+
   return (
-    <div>
-      <h1>Dashbord Component</h1>
-      <div>
+    <div className="container">
+      <h3 className="display-left">Filtering students</h3>
+      <div className="student-chk cotainer">
         <label htmlFor="all">
           All
           <input
             type="checkbox"
             name="all"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.all}
           />
         </label>
 
@@ -116,7 +131,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Evelyn"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Evelyn}
           />
         </label>
 
@@ -126,7 +142,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Aranka"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Aranka}
           />
         </label>
 
@@ -136,7 +153,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Floris"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Floris}
           />
         </label>
 
@@ -146,7 +164,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Hector"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Hector}
           />
         </label>
 
@@ -156,7 +175,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Martina"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Martina}
           />
         </label>
 
@@ -166,7 +186,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Rahima"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Rahima}
           />
         </label>
         <label htmlFor="Maurits">
@@ -175,7 +196,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Maurits"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Maurits}
           />
         </label>
 
@@ -185,7 +207,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Sandra"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Sandra}
           />
         </label>
 
@@ -195,7 +218,8 @@ export default function Dashbord() {
             type="checkbox"
             name="Wietske"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Wietske}
           />
         </label>
 
@@ -205,18 +229,19 @@ export default function Dashbord() {
             type="checkbox"
             name="Storm"
             onClick={handlerCheckbox}
-            defaultChecked
+            onChange={handlerChange}
+            checked={chkState.Storm}
           />
         </label>
       </div>
       <VictoryChart
-        style={{ parent: { maxWidth: "90%" } }}
+        style={{ parent: { maxWidth: "100%" } }}
         domainPadding={10}
         theme={VictoryTheme.material}
         width={1000}
       >
         <VictoryLegend
-          x={420}
+          x={0}
           y={20}
           orientation="horizontal"
           gutter={20}
@@ -269,7 +294,7 @@ export default function Dashbord() {
       </VictoryChart>
       <VictoryChart
         style={{
-          parent: { maxWidth: "90%" },
+          parent: { maxWidth: "100%" },
           data: { stroke: "#c43a31" },
         }}
         domainPadding={15}
@@ -277,7 +302,7 @@ export default function Dashbord() {
         width={1000}
       >
         <VictoryLegend
-          x={420}
+          x={0}
           y={20}
           orientation="horizontal"
           gutter={20}
