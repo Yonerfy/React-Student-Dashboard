@@ -3366,13 +3366,6 @@ const initialState = [
 const studentSlice = createSlice({
   name: "student",
   initialState,
-  reducers: {
-    studentTest(state, action) {
-      state = action.payload;
-    },
-  },
 });
-
-export const { studentDelete, studentTest } = studentSlice.actions;
 
 export default studentSlice.reducer;
