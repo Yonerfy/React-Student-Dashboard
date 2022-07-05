@@ -9,16 +9,24 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-end;
+  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: black;
+}
+.react-title {
+  color: #61dafb;
+}
+.student-title {
+  color: tomato;
 }
 
 .App-header h1 {
   text-align: left;
   align-self: flex-start;
   margin-bottom: 0;
+  font-size: 30px;
+  font-weight: 500;
 }
 
 .App-link {
@@ -51,7 +59,6 @@
   width: inherit;
   display: flex;
   justify-content: flex-start;
-  margin-top: 80px;
   font-size: 17px;
 }
 .nav-base a {

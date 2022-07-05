@@ -86,9 +86,6 @@ const initialState = [
 const studentExtraDataSlice = createSlice({
   name: "extra-student-data",
   initialState,
-  reducers: {},
 });
-
-export const {} = studentExtraDataSlice.actions;
 
 export default studentExtraDataSlice.reducer;

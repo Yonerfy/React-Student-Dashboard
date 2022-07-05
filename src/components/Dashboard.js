@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { studentAdded } from "../features/studentSlice";
 import { studentFilter } from "../features/filterSlice";
 import { sameStudent } from "../features/filterSlice";
 import { selectFilterStudents } from "../features/filterSlice";
 
 import {
-  VictoryContainer,
   VictoryBar,
   VictoryChart,
   VictoryTheme,
@@ -24,19 +21,20 @@ export default function Dashbord() {
     difficult: true,
   });
 
-  const [chkState, setChkState] = useState({
-    all: true,
-    Evelyn: true,
-    Aranka: true,
-    Floris: true,
-    Hector: true,
-    Martina: true,
-    Rahima: true,
-    Maurits: true,
-    Sandra: true,
-    Wietske: true,
-    Storm: true,
-  });
+  const [chkState, setChkState] = useState([
+    { name: "all", checkbox: false },
+    { name: "Evelyn", checkbox: true },
+    { name: "Aranka", checkbox: true },
+    { name: "Floris", checkbox: true },
+    { name: "Hector", checkbox: true },
+    { name: "Martina", checkbox: true },
+    { name: "Rahima", checkbox: true },
+    { name: "Maurits", checkbox: true },
+    { name: "Sandra", checkbox: true },
+    { name: "Wietske", checkbox: true },
+    { name: "Storm", checkbox: true },
+  ]);
+
   const dispatch = useDispatch();
   const data = useSelector((state) => selectFilterStudents(state));
   const dataAvareges = newDataWithAvarege(data);
@@ -88,6 +86,14 @@ export default function Dashbord() {
 
   function handlerChange(e) {
     const { checked, name } = e.target;
+    setChkState((state) => {
+      return state.map((student) => {
+        return (
+          student.name === name &&
+          checked && { ...state, checked: !state.checkbox }
+        );
+      });
+    });
   }
 
   return (
@@ -101,7 +107,7 @@ export default function Dashbord() {
             name="all"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.all}
+            checked={chkState[0].checkbox}
           />
         </label>
 
@@ -132,7 +138,7 @@ export default function Dashbord() {
             name="Evelyn"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Evelyn}
+            checked={chkState[1].checkbox}
           />
         </label>
 
@@ -143,7 +149,7 @@ export default function Dashbord() {
             name="Aranka"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Aranka}
+            checked={chkState[2].checkbox}
           />
         </label>
 
@@ -154,7 +160,7 @@ export default function Dashbord() {
             name="Floris"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Floris}
+            checked={chkState[3].checkbox}
           />
         </label>
 
@@ -165,7 +171,7 @@ export default function Dashbord() {
             name="Hector"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Hector}
+            checked={chkState[4].checkbox}
           />
         </label>
 
@@ -176,7 +182,7 @@ export default function Dashbord() {
             name="Martina"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Martina}
+            checked={chkState[5].checkbox}
           />
         </label>
 
@@ -187,9 +193,10 @@ export default function Dashbord() {
             name="Rahima"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Rahima}
+            checked={chkState[6].checkbox}
           />
         </label>
+
         <label htmlFor="Maurits">
           Maurits
           <input
@@ -197,7 +204,7 @@ export default function Dashbord() {
             name="Maurits"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Maurits}
+            checked={chkState[7].checkbox}
           />
         </label>
 
@@ -208,7 +215,7 @@ export default function Dashbord() {
             name="Sandra"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Sandra}
+            checked={chkState[8].checkbox}
           />
         </label>
 
@@ -219,7 +226,7 @@ export default function Dashbord() {
             name="Wietske"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Wietske}
+            checked={chkState[9].checkbox}
           />
         </label>
 
@@ -230,7 +237,7 @@ export default function Dashbord() {
             name="Storm"
             onClick={handlerCheckbox}
             onChange={handlerChange}
-            checked={chkState.Storm}
+            checked={chkState[10].checkbox}
           />
         </label>
       </div>

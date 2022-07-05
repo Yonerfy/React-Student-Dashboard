@@ -13,7 +13,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Yonerfy Student Dashbord</h1>
+        <h1>
+          <span className="react-title">React</span>{" "}
+          <span className="student-title">Student</span> Dashbord
+        </h1>
         <nav className="nav-base nav-main">
           <Link
             to="/"
