@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { studentAdded } from "../features/studentSlice";
+import { studentFilter } from "../features/filterSlice";
+import { sameStudent } from "../features/filterSlice";
+import { selectFilterStudents } from "../features/filterSlice";
+
 import {
+  VictoryContainer,
   VictoryBar,
   VictoryChart,
   VictoryTheme,
@@ -9,426 +15,233 @@ import {
   VictoryAxis,
   VictoryGroup,
   VictoryLegend,
+  VictoryLine,
 } from "victory";
 
 export default function Dashbord() {
-  const data = useSelector((state) => state.student);
-  const SCRUM = data.filter((student) => student.assignment === "SCRUM");
-  const W1D11 = data.filter((student) => student.assignment === "W1D1-1");
-  const W1D21 = data.filter((student) => student.assignment === "W1D2-1");
-  const W1D22 = data.filter((student) => student.assignment === "W1D2-2");
-  const W1D23 = data.filter((student) => student.assignment === "W1D2-3");
-  const W1D24 = data.filter((student) => student.assignment === "W1D2-4");
-  const W1D25 = data.filter((student) => student.assignment === "W1D2-5");
-  const W1D31 = data.filter((student) => student.assignment === "W1D3-1");
-  const W1D32 = data.filter((student) => student.assignment === "W1D3-2");
-  const W1D34 = data.filter((student) => student.assignment === "W1D3-4");
-  const W1D35 = data.filter((student) => student.assignment === "W1D3-5");
-  const W1D3 = data.filter((student) => student.assignment === "W1D3");
-  const W1D41 = data.filter((student) => student.assignment === "W1D4-1");
-  const W1D4 = data.filter((student) => student.assignment === "W1D4");
-  const W1D5 = data.filter((student) => student.assignment === "W1D5");
-  const W2D11 = data.filter((student) => student.assignment === "W2D1-1");
-  const W2D12 = data.filter((student) => student.assignment === "W2D1-2");
-  const W2D21 = data.filter((student) => student.assignment === "W2D2-1");
-  const W2D22 = data.filter((student) => student.assignment === "W2D2-2");
-  const W2D23 = data.filter((student) => student.assignment === "W2D2-3");
-  const W2D31 = data.filter((student) => student.assignment === "W2D3-1");
-  const W2D32 = data.filter((student) => student.assignment === "W2D3-2");
-  const W2D33 = data.filter((student) => student.assignment === "W2D3-3");
-  const W2D41 = data.filter((student) => student.assignment === "W2D4-1");
-  const W2D42 = data.filter((student) => student.assignment === "W2D4-2");
-  const W2D43 = data.filter((student) => student.assignment === "W2D4-3");
-  const W2D5 = data.filter((student) => student.assignment === "W2D5");
-  const W3D11 = data.filter((student) => student.assignment === "W3D1-1");
-  const W3D12 = data.filter((student) => student.assignment === "W3D1-2");
-  const W3D13 = data.filter((student) => student.assignment === "W3D1-3");
-  const W3D14 = data.filter((student) => student.assignment === "W3D1-4");
-  const W3D21 = data.filter((student) => student.assignment === "W3D2-1");
-  const W3D22 = data.filter((student) => student.assignment === "W3D2-2");
-  const W3D23 = data.filter((student) => student.assignment === "W3D2-3");
-  const W3D31 = data.filter((student) => student.assignment === "W3D3-1");
-  const W3D32 = data.filter((student) => student.assignment === "W3D3-2");
-  const W3D33 = data.filter((student) => student.assignment === "W3D3-3");
-  const W3D34 = data.filter((student) => student.assignment === "W3D3-4");
-  const W3D41 = data.filter((student) => student.assignment === "W3D4-1");
-  const W3D42 = data.filter((student) => student.assignment === "W3D4-2");
-  const W3D5 = data.filter((student) => student.assignment === "W3D5");
-  const W4D21 = data.filter((student) => student.assignment === "W4D2-1");
-  const W4D22 = data.filter((student) => student.assignment === "W4D2-2");
-  const W4D23 = data.filter((student) => student.assignment === "W4D2-3");
-  const W4D24 = data.filter((student) => student.assignment === "W4D2-4");
-  const W4D31 = data.filter((student) => student.assignment === "W4D3-1");
-  const W4D32 = data.filter((student) => student.assignment === "W4D3-2");
-  const W4D33 = data.filter((student) => student.assignment === "W4D3-3");
-  const W4D34 = data.filter((student) => student.assignment === "W4D3-4");
-  const W4D35 = data.filter((student) => student.assignment === "W4D3-5");
-  const W4D3 = data.filter((student) => student.assignment === "W4D3");
-  const W5D41 = data.filter((student) => student.assignment === "W5D4-1");
-  const W5D5 = data.filter((student) => student.assignment === "W5D5");
-  const W6D11 = data.filter((student) => student.assignment === "W6D1-1");
-  const W6D21 = data.filter((student) => student.assignment === "W6D2-1");
-  const W6D2 = data.filter((student) => student.assignment === "W6D2");
+  const [toggleFunDifficult, setToggleFunDifficult] = useState({
+    fun: true,
+    difficult: true,
+  });
 
-  const allStudentAvereges = [
-    {
-      name: "Student",
-      assignment: "SCRUM",
-      difficult: calcAvarege(SCRUM),
-      fun: calcAvarege(SCRUM, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D1-1",
-      difficult: calcAvarege(W1D11),
-      fun: calcAvarege(W1D11, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D2-1",
-      difficult: calcAvarege(W1D21),
-      fun: calcAvarege(W1D21, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D2-2",
-      difficult: calcAvarege(W1D22),
-      fun: calcAvarege(W1D22, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D2-3",
-      difficult: calcAvarege(W1D23),
-      fun: calcAvarege(W1D23, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D2-4",
-      difficult: calcAvarege(W1D24),
-      fun: calcAvarege(W1D24, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D2-5",
-      difficult: calcAvarege(W1D25),
-      fun: calcAvarege(W1D25, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D3-1",
-      difficult: calcAvarege(W1D31),
-      fun: calcAvarege(W1D31, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D3-2",
-      difficult: calcAvarege(W1D32),
-      fun: calcAvarege(W1D32, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D3-4",
-      difficult: calcAvarege(W1D34),
-      fun: calcAvarege(W1D34, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D3-5",
-      difficult: calcAvarege(W1D35),
-      fun: calcAvarege(W1D35, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D3",
-      difficult: calcAvarege(W1D3),
-      fun: calcAvarege(W1D3, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D4-1",
-      difficult: calcAvarege(W1D41),
-      fun: calcAvarege(W1D41, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D4",
-      difficult: calcAvarege(W1D4),
-      fun: calcAvarege(W1D4, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W1D5",
-      difficult: calcAvarege(W1D5),
-      fun: calcAvarege(W1D5, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D1-1",
-      difficult: calcAvarege(W2D11),
-      fun: calcAvarege(W2D11, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D1-2",
-      difficult: calcAvarege(W2D12),
-      fun: calcAvarege(W2D12, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D2-1",
-      difficult: calcAvarege(W2D21),
-      fun: calcAvarege(W2D21, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D2-2",
-      difficult: calcAvarege(W2D22),
-      fun: calcAvarege(W2D22, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D2-3",
-      difficult: calcAvarege(W2D23),
-      fun: calcAvarege(W2D23, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D3-1",
-      difficult: calcAvarege(W2D31),
-      fun: calcAvarege(W2D31, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D3-2",
-      difficult: calcAvarege(W2D32),
-      fun: calcAvarege(W2D32, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D3-3",
-      difficult: calcAvarege(W2D33),
-      fun: calcAvarege(W2D33, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D4-1",
-      difficult: calcAvarege(W2D41),
-      fun: calcAvarege(W2D41, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D4-2",
-      difficult: calcAvarege(W2D42),
-      fun: calcAvarege(W2D42, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D4-3",
-      difficult: calcAvarege(W2D43),
-      fun: calcAvarege(W2D43, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W2D5",
-      difficult: calcAvarege(W2D5),
-      fun: calcAvarege(W2D5, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D1-1",
-      difficult: calcAvarege(W3D11),
-      fun: calcAvarege(W3D11, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D1-2",
-      difficult: calcAvarege(W3D12),
-      fun: calcAvarege(W3D12, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D1-3",
-      difficult: calcAvarege(W3D13),
-      fun: calcAvarege(W3D13, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D1-4",
-      difficult: calcAvarege(W3D14),
-      fun: calcAvarege(W3D14, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D2-1",
-      difficult: calcAvarege(W3D21),
-      fun: calcAvarege(W3D21, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D2-2",
-      difficult: calcAvarege(W3D22),
-      fun: calcAvarege(W3D22, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D2-3",
-      difficult: calcAvarege(W3D23),
-      fun: calcAvarege(W3D23, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D3-1",
-      difficult: calcAvarege(W3D31),
-      fun: calcAvarege(W3D31, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D3-2",
-      difficult: calcAvarege(W3D32),
-      fun: calcAvarege(W3D32, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D3-3",
-      difficult: calcAvarege(W3D33),
-      fun: calcAvarege(W3D33, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D3-4",
-      difficult: calcAvarege(W3D34),
-      fun: calcAvarege(W3D34, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D4-1",
-      difficult: calcAvarege(W3D41),
-      fun: calcAvarege(W3D41, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D4-2",
-      difficult: calcAvarege(W3D42),
-      fun: calcAvarege(W3D42, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W3D5",
-      difficult: calcAvarege(W3D5),
-      fun: calcAvarege(W3D5, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D2-1",
-      difficult: calcAvarege(W4D21),
-      fun: calcAvarege(W4D21, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D2-2",
-      difficult: calcAvarege(W4D22),
-      fun: calcAvarege(W4D22, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D2-3",
-      difficult: calcAvarege(W4D23),
-      fun: calcAvarege(W4D23, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D2-4",
-      difficult: calcAvarege(W4D24),
-      fun: calcAvarege(W4D24, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D3-1",
-      difficult: calcAvarege(W4D31),
-      fun: calcAvarege(W4D31, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D3-2",
-      difficult: calcAvarege(W4D32),
-      fun: calcAvarege(W4D32, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D3-3",
-      difficult: calcAvarege(W4D33),
-      fun: calcAvarege(W4D33, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D3-4",
-      difficult: calcAvarege(W4D34),
-      fun: calcAvarege(W4D34, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D3-5",
-      difficult: calcAvarege(W4D35),
-      fun: calcAvarege(W4D35, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W4D3",
-      difficult: calcAvarege(W4D3),
-      fun: calcAvarege(W4D3, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W5D4-1",
-      difficult: calcAvarege(W5D41),
-      fun: calcAvarege(W5D41, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W5D5",
-      difficult: calcAvarege(W5D5),
-      fun: calcAvarege(W5D5, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W6D1-1",
-      difficult: calcAvarege(W6D11),
-      fun: calcAvarege(W6D11, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W6D2-1",
-      difficult: calcAvarege(W6D21),
-      fun: calcAvarege(W6D21, "fun"),
-    },
-    {
-      name: "Student",
-      assignment: "W6D2",
-      difficult: calcAvarege(W6D2),
-      fun: calcAvarege(W6D2, "fun"),
-    },
-  ];
+  const [chkState, setChkState] = useState({
+    all: true,
+    Evelyn: true,
+    Aranka: true,
+    Floris: true,
+    Hector: true,
+    Martina: true,
+    Rahima: true,
+    Maurits: true,
+    Sandra: true,
+    Wietske: true,
+    Storm: true,
+  });
+  const dispatch = useDispatch();
+  const data = useSelector((state) => selectFilterStudents(state));
+  const dataAvareges = newDataWithAvarege(data);
 
-  function calcAvarege(arr, funOrDifficult) {
+  function funDifficultToggle(name) {
+    name === "fun"
+      ? setToggleFunDifficult((toggleFunDifficult) => ({
+          ...toggleFunDifficult,
+          fun: !toggleFunDifficult.fun,
+        }))
+      : setToggleFunDifficult((toggleFunDifficult) => ({
+          ...toggleFunDifficult,
+          difficult: !toggleFunDifficult.difficult,
+        }));
+  }
+
+  function calcAvarege(arr, assignment, funOrDifficult) {
     let funTotal = [];
-    let length = arr.length;
+    const assignementArr = arr.filter(
+      (student) => student.assignment === assignment
+    );
+    let length = assignementArr.length;
     funOrDifficult === "fun"
-      ? arr.forEach(({ fun }) => funTotal.push(parseInt(fun)))
-      : arr.forEach(({ difficult }) => funTotal.push(parseInt(difficult)));
+      ? assignementArr.forEach(({ fun }) => funTotal.push(parseInt(fun)))
+      : assignementArr.forEach(({ difficult }) =>
+          funTotal.push(parseInt(difficult))
+        );
     const average = funTotal.reduce((a, b) => a + b);
+
     return Math.round(average / length);
   }
+
+  function newDataWithAvarege(data) {
+    return data.map((student) => {
+      return {
+        name: student.name,
+        assignment: student.assignment,
+        difficult: calcAvarege(data, student.assignment),
+        fun: calcAvarege(data, student.assignment, student.fun),
+      };
+    });
+  }
+
+  function handlerCheckbox(e) {
+    const { name, checked } = e.target;
+    dispatch(studentFilter(name));
+    dispatch(sameStudent(checked));
+  }
+
+  function handlerChange(e) {
+    const { checked, name } = e.target;
+  }
+
   return (
-    <div>
-      <h1>Dashbord Component</h1>
+    <div className="container">
+      <h3 className="display-left">Filtering students</h3>
+      <div className="student-chk cotainer">
+        <label htmlFor="all">
+          All
+          <input
+            type="checkbox"
+            name="all"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.all}
+          />
+        </label>
+
+        <label htmlFor="fun">
+          Fun
+          <input
+            type="checkbox"
+            name="fun"
+            onClick={(e) => funDifficultToggle(e.target.name)}
+            defaultChecked
+          />
+        </label>
+
+        <label htmlFor="difficult">
+          Difficult
+          <input
+            type="checkbox"
+            name="difficult"
+            onClick={(e) => funDifficultToggle(e.target.name)}
+            defaultChecked
+          />
+        </label>
+
+        <label htmlFor="Evelyn">
+          Evelyn
+          <input
+            type="checkbox"
+            name="Evelyn"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Evelyn}
+          />
+        </label>
+
+        <label htmlFor="Aranka">
+          Aranka
+          <input
+            type="checkbox"
+            name="Aranka"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Aranka}
+          />
+        </label>
+
+        <label htmlFor="Floris">
+          Floris
+          <input
+            type="checkbox"
+            name="Floris"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Floris}
+          />
+        </label>
+
+        <label htmlFor="Hector">
+          Hector
+          <input
+            type="checkbox"
+            name="Hector"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Hector}
+          />
+        </label>
+
+        <label htmlFor="Martina">
+          Martina
+          <input
+            type="checkbox"
+            name="Martina"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Martina}
+          />
+        </label>
+
+        <label htmlFor="Rahima">
+          Rahima
+          <input
+            type="checkbox"
+            name="Rahima"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Rahima}
+          />
+        </label>
+        <label htmlFor="Maurits">
+          Maurits
+          <input
+            type="checkbox"
+            name="Maurits"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Maurits}
+          />
+        </label>
+
+        <label htmlFor="Sandra">
+          Sandra
+          <input
+            type="checkbox"
+            name="Sandra"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Sandra}
+          />
+        </label>
+
+        <label htmlFor="Wietske">
+          Wietske
+          <input
+            type="checkbox"
+            name="Wietske"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Wietske}
+          />
+        </label>
+
+        <label htmlFor="Storm">
+          Storm
+          <input
+            type="checkbox"
+            name="Storm"
+            onClick={handlerCheckbox}
+            onChange={handlerChange}
+            checked={chkState.Storm}
+          />
+        </label>
+      </div>
       <VictoryChart
-        style={{ parent: { maxWidth: "90%" } }}
+        style={{ parent: { maxWidth: "100%" } }}
         domainPadding={10}
         theme={VictoryTheme.material}
         width={1000}
       >
         <VictoryLegend
-          x={420}
+          x={0}
           y={20}
           orientation="horizontal"
           gutter={20}
@@ -444,6 +257,8 @@ export default function Dashbord() {
 
         <VictoryAxis
           style={{ tickLabels: { angle: 50, fontSize: 10, padding: 15 } }}
+          tickValues={dataAvareges.map((assig) => assig.assignment)}
+          tickFormat={dataAvareges.map((assig) => assig.assignment)}
         />
         <VictoryAxis
           style={{ tickLabels: { fontSize: 10 } }}
@@ -453,24 +268,84 @@ export default function Dashbord() {
         />
         <VictoryGroup>
           <VictoryStack>
-            <VictoryBar
-              barWidth={5}
-              data={allStudentAvereges}
-              x="assignment"
-              y={"fun"}
-              style={{ data: { fill: "tomato", width: 3 } }}
-              alignment="end"
-            />
+            {toggleFunDifficult.fun && (
+              <VictoryBar
+                barWidth={5}
+                data={dataAvareges}
+                x="assignment"
+                y={"fun"}
+                style={{ data: { fill: "tomato", width: 3 } }}
+                alignment="end"
+              />
+            )}
           </VictoryStack>
           <VictoryStack>
-            <VictoryBar
-              data={allStudentAvereges}
-              x="assignment"
-              y={"difficult"}
-              style={{ data: { fill: "gold", width: 5 } }}
-              alignment="start"
-            />
+            {toggleFunDifficult.difficult && (
+              <VictoryBar
+                data={dataAvareges}
+                x="assignment"
+                y={"difficult"}
+                style={{ data: { fill: "gold", width: 5 } }}
+                alignment="start"
+              />
+            )}
           </VictoryStack>
+        </VictoryGroup>
+      </VictoryChart>
+      <VictoryChart
+        style={{
+          parent: { maxWidth: "100%" },
+          data: { stroke: "#c43a31" },
+        }}
+        domainPadding={15}
+        theme={VictoryTheme.material}
+        width={1000}
+      >
+        <VictoryLegend
+          x={0}
+          y={20}
+          orientation="horizontal"
+          gutter={20}
+          data={[
+            {
+              name: "Average of all student",
+              symbol: { fill: "tomato", type: "star" },
+            },
+            { name: "Fun", symbol: { fill: "tomato" } },
+            { name: "Difficult", symbol: { fill: "gold" } },
+          ]}
+        />
+        <VictoryAxis
+          style={{ tickLabels: { angle: 50, fontSize: 10, padding: 15 } }}
+          tickValues={dataAvareges.map((assig) => assig.assignment)}
+          tickFormat={dataAvareges.map((assig) => assig.assignment)}
+        />
+        <VictoryAxis
+          style={{ tickLabels: { fontSize: 10 } }}
+          dependentAxis
+          tickValues={[1, 2, 3, 4, 5]}
+          tickFormat={[1, 2, 3, 4, 5]}
+        />
+        <VictoryGroup>
+          {toggleFunDifficult.fun && (
+            <VictoryLine
+              style={{
+                data: { stroke: "tomato", strokeWidth: 2 },
+              }}
+              data={dataAvareges}
+              x="assignment"
+              y={"fun"}
+            />
+          )}
+          {toggleFunDifficult.difficult && (
+            <VictoryLine
+              style={{
+                data: { stroke: "gold", strokeWidth: 2 },
+              }}
+              data={dataAvareges}
+              y={"difficult"}
+            />
+          )}
         </VictoryGroup>
       </VictoryChart>
     </div>

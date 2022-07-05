@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const filters = {
-  name: "",
+  name: "all",
+  checked: false,
 };
 
 let initialState = filters;
@@ -13,27 +14,27 @@ const filterSlice = createSlice({
     studentFilter(state, action) {
       state.name = action.payload;
     },
+    sameStudent(state, action) {
+      state.checked = action.payload;
+    },
   },
 });
 
-export const { studentFilter } = filterSlice.actions;
+export const { studentFilter, sameStudent } = filterSlice.actions;
 export default filterSlice.reducer;
 
-// export const selectFilterSongs = (state) => {
-//   if (state.filter.song === "all") {
-//     return state.songs;
-//   }
-//   if (state.filter.song === "Rock") {
-//     return state.songs.filter((song) => song.genre === "Rock");
-//   }
-//   if (state.filter.song === "Pop") {
-//     return state.songs.filter((song) => song.genre === "Pop");
-//   }
-//   if (state.filter.song === "Salsa") {
-//     return state.songs.filter((song) => song.genre === "Salsa");
-//   }
-//   if (state.filter.song === "Jazz") {
-//     return state.songs.filter((song) => song.genre === "Jazz");
-//   }
-//   return state.songs;
-// };
+export const selectFilterStudents = (state) => {
+  if (state.filter.name === "all" || state.filter.name === "") {
+    return state.student;
+  }
+
+  let studentArr = [];
+  const checkbox = document.querySelectorAll('input[type="checkbox"]');
+  checkbox.forEach((chk) => chk.checked && studentArr.push(chk.name));
+
+  const filterDataAvg = state.student.filter((student) =>
+    studentArr.includes(student.name)
+  );
+
+  return filterDataAvg;
+};

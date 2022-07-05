@@ -3367,12 +3367,12 @@ const studentSlice = createSlice({
   name: "student",
   initialState,
   reducers: {
-    studentAdded(state, action) {
-      state.push(action.payload);
+    studentTest(state, action) {
+      state = action.payload;
     },
   },
 });
 
-export const { studentAdded } = studentSlice.actions;
+export const { studentDelete, studentTest } = studentSlice.actions;
 
 export default studentSlice.reducer;
